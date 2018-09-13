@@ -35,12 +35,14 @@ try {
 
     if( $_REQUEST['event'] == "push" ){ 
       //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
-      $out = shell_exec("git pull origin master");
-      $rev = shell_exec("git rev-list HEAD --count");
+      $out = shell_exec("git pull origin master 2>&1 | tee -a ~/php-debug.log");
+      
       echo "PUSH IT! > yay > {$_REQUEST['event']} \n";
       echo "out:$out\n";
       echo "sig:$sig\n";
-      echo "vers:$rev\n"
+
+      $rev = shell_exec("git rev-list HEAD --count ");
+      echo "vers:$rev\n";
     }
 
   }else{
@@ -49,7 +51,7 @@ try {
     if( $_REQUEST['event'] == "push" ){ 
       $rev = shell_exec("git rev-list HEAD --count");
       echo "GET PUSH IT! > {$_REQUEST['event']}";
-      echo "vers:$rev\n"
+      echo "vers:$rev\n";
     }
   }
 
