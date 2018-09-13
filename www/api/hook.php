@@ -38,7 +38,7 @@ try {
       echo "out:$out";
     }
   }else{
-    echo var_dump(GETS);
+
     echo var_dump(REQ);
     if( $_REQUEST['event'] == "push" ){ 
       echo "GET PUSH IT! > " + $_REQUEST['event'];
