@@ -36,16 +36,20 @@ try {
     if( $_REQUEST['event'] == "push" ){ 
       //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
       $out = shell_exec("git pull origin master");
+      $rev = shell_exec("git rev-list HEAD --count");
       echo "PUSH IT! > yay > {$_REQUEST['event']} \n";
       echo "out:$out\n";
       echo "sig:$sig\n";
+      echo "vers:$rev\n"
     }
 
   }else{
 
     echo var_dump(REQ);
     if( $_REQUEST['event'] == "push" ){ 
+      $rev = shell_exec("git rev-list HEAD --count");
       echo "GET PUSH IT! > {$_REQUEST['event']}";
+      echo "vers:$rev\n"
     }
   }
 
