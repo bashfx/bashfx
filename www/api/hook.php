@@ -10,6 +10,7 @@ define("METHOD", $_SERVER['REQUEST_METHOD']);
 define("PUSHKEY", getenv('GIT_PUSH_KEY') || 0 );
 
   echo HELLO_WORLD;
+  echo "YAY BABY";
 
   $headers = apache_request_headers();
 ?>
