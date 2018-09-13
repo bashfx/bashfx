@@ -7,6 +7,7 @@ define("REQ", $_REQUEST);
 define("GETS", $_GET);
 define("POSTS", $_POST);
 define("METHOD", $_SERVER['REQUEST_METHOD']);
+define("PUSHKEY", getenv('GIT_PUSH_KEY') || 0 );
 
   echo HELLO_WORLD;
 
@@ -27,11 +28,14 @@ try {
 
   if( METHOD == 'POST' ){
     $sig = $headers['X-Hub-Signature'];
+    $shasig = sha1(PUSHKEY);
 
     echo var_dump(USER_AGENT);
     echo var_dump(QUERY_STRING);
     echo var_dump(POSTS);
     echo var_dump(REQ);
+
+    print_r(explode('=',$sig,0));
 
     if( $_REQUEST['event'] == "push" ){ 
       //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
@@ -39,7 +43,7 @@ try {
       
       echo "PUSH IT! > yay > {$_REQUEST['event']} \n";
       echo "out:$out\n";
-      echo "sig:$sig\n";
+      echo "sig:$sig,$shasig \n";
 
       $rev = shell_exec("git rev-list HEAD --count ");
       echo "vers:$rev\n";
