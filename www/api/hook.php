@@ -35,7 +35,6 @@ try {
 
     if( $_REQUEST['event'] == "push" ){ 
       echo "PUSH IT!";
-      echo $out
     }
   }
 
