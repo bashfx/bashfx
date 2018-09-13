@@ -36,11 +36,11 @@ try {
     if( $_REQUEST['event'] == "push" ){ 
       //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
       $out = shell_exec("git pull origin master");
-      echo "PUSH IT! > " + $_REQUEST['event'];
+      echo "PUSH IT! > {$_REQUEST['event']}";
       echo "out:$out";
       echo "sig:$sig";
     }
-    
+
   }else{
 
     echo var_dump(REQ);
