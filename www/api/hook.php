@@ -44,7 +44,7 @@ try {
       
       echo "PUSH IT! > yay > {$_REQUEST['event']} \n";
       echo "out:$out\n";
-      echo "sig:$sig,$shasig \n";
+      echo "sig:$sig :: $shasig \n";
 
       $rev = shell_exec("git rev-list HEAD --count ");
       echo "vers:$rev\n";
