@@ -25,9 +25,7 @@ define("METHOD", $_SERVER['REQUEST_METHOD']);
 <?
 try {
 
-  
-
-  if( METHOD != 'POST' ){
+  if( METHOD == 'POST' ){
     echo var_dump(USER_AGENT);
     echo var_dump(QUERY_STRING);
     echo var_dump(GET);
