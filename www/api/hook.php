@@ -8,15 +8,18 @@ define("GETS", $_GET);
 define("POSTS", $_POST);
 define("METHOD", $_SERVER['REQUEST_METHOD']);
 
-echo HELLO_WORLD;
+  echo HELLO_WORLD;
 
-$headers = apache_request_headers();
-
-foreach ($headers as $header => $value) {
-    echo "$header: $value <br />\n";
-}
-
+  $headers = apache_request_headers();
 ?>
+
+<pre>
+<?
+  foreach ($headers as $header => $value) {
+      echo "$header: $value \n";
+  }
+?>
+</pre>
 
 <pre>
 <?
