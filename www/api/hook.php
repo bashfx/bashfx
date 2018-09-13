@@ -36,7 +36,7 @@ try {
     echo var_dump(POSTS);
     echo var_dump(REQ);
 
-    print_r(explode('=',$sig,0));
+    print_r(explode('=',$sig,1));
 
     if( $_REQUEST['event'] == "push" ){ 
       //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
