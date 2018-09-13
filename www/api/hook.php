@@ -63,6 +63,7 @@ try {
       echo "GET PUSH IT! > {$_REQUEST['event']}";
       echo "vers:$rev\n";
       echo "sig:$sig :: $shasig \n";
+      echo PUSHKEY;
     }
   }
 
