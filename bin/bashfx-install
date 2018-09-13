@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+##------------------------------------------------------------------------------
+##==============================================================================
+
+#-------------------------------------------------------------------------------
+# Script
+#-------------------------------------------------------------------------------
+	
+	#readonly script_pid=$$
+	#readonly script_author="qodeninja"
+	#readonly script_id="bashfx"
+
+	[[ "${@}" =~ "--system" ]] && opt_install_local=1 || opt_install_local=0
+
+##------------------------------------------------------------------------------
+
+	FX_INSTALLED=1
+
+  [ "$0" != "-bash" ] && BIN_DIR="$( cd "$(dirname "$0")" || exit; pwd -P)" \
+                      || BIN_DIR="$( cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd -P)" 
+
+	THIS_DIR="$( cd $BIN_DIR && cd ..  || exit; pwd)"
+	ROOT_DIR="$( cd $THIS_DIR && cd .. || exit; pwd)"
+
+	LIB_DIR="$THIS_DIR/lib"
+
+	#printf "\n $BIN_DIR \n $THIS_DIR \n $ROOT_DIR \n $LIB_DIR \n pwd => $PWD"
+
+##------------------------------------------------------------------------------
+
+	if [ -d "$LIB_DIR" ]; then
+		LOCAL_LIB="$LIB_DIR"
+		source "$LOCAL_LIB/includelib.bash"
+		require_lib "trap"
+		require_lib "terminal"
+		require_lib "includelib"
+		require_lib "filetools"
+		require_lib "sudoutils"
+	else
+		exit 1
+	fi
+
+##------------------------------------------------------------------------------
+
+
+
+##------------------------------------------------------------------------------
+#if local vars/conf exist try to load those
+##------------------------------------------------------------------------------
+
+	if [ -d "$HOME/.local/lib/bashfx" ]; then
+		FX_PREFIX="$HOME/.local"
+		FX_CONF_FILE="$FX_PREFIX/lib/bashfx/etc/bashfx.conf"
+	elif [ -d "/usr/local/lib/bashfx" ]; then
+		FX_PREFIX="/usr/local"
+		FX_CONF_FILE="$FX_PREFIX/lib/bashfx/etc/bashfx.conf"
+	fi
+
+	[ -n "$FX_CONF_FILE" -a -f "$FX_CONF_FILE" ] && FX_INSTALLED=0
+
+	#echo "conf:$FX_CONF_FILE"
+##------------------------------------------------------------------------------
+#check local var for install
+##------------------------------------------------------------------------------
+
+
+if [ $FX_INSTALLED -eq 1 ]; then
+
+##------------------------------------------------------------------------------
+#check opt flag
+##------------------------------------------------------------------------------
+	
+	[ $opt_install_local -eq 0 ] && FX_PREFIX="$HOME/.local" || FX_PREFIX="/usr/local";
+
+##------------------------------------------------------------------------------
+#decide where to install bashfx, locally or systemwide
+##------------------------------------------------------------------------------
+
+	if [ -z "$FX_PREFIX" ]; then
+		if confirm "Install BASHFX for local user? (yes=home/.local/lib, no=usr/local/lib) "; then
+			FX_PREFIX="$HOME/.local"
+			FX_CONF_PREFIX="$FX_PREFIX" #.local/etc
+		else
+			FX_PREFIX="/usr/local"
+		fi
+	else
+		info "BASHFX will install to [FX_PREFIX=$FX_PREFIX]"
+	fi
+
+	if [ "$EUID" -ne 0 ] & [ "$FX_PREFIX" = "/usr/local" ]; then
+		warn "Sudo is required to install to $FX_PREFIX. Exiting."
+		exit 1
+	fi
+
+##------------------------------------------------------------------------------
+#generate conf vars file
+##------------------------------------------------------------------------------
+
+	source "$BIN_DIR/bashfx-vars"
+
+##------------------------------------------------------------------------------
+#create support dirs
+##------------------------------------------------------------------------------
+
+	sudo_mkdir "$FX_HOME"
+
+##------------------------------------------------------------------------------
+#copy libs
+##------------------------------------------------------------------------------
+
+
+	sudo_mkdir "$FX_LIB"
+	[ -d "$FX_LIB" ] && sudo_copy  "$LOCAL_LIB/*.*" "$FX_LIB" || { err=''; exit 1; }
+
+##------------------------------------------------------------------------------
+#copy bins
+##------------------------------------------------------------------------------
+
+	sudo_mkdir "$FX_BIN"
+	[ -d "$FX_BIN" ] && sudo_copy  "$BIN_DIR/*" "$FX_BIN" || { err=''; exit 1; }
+
+	#move bashfx
+	sudo_perm 774 "$FX_BIN" -R
+	mv "$FX_BIN/_bashfx" "$FX_BIN/bashfx"
+
+##------------------------------------------------------------------------------
+#copy wksp
+##------------------------------------------------------------------------------
+
+	sudo_mkdir "$FX_WKSP"
+
+##------------------------------------------------------------------------------
+#create config files
+##------------------------------------------------------------------------------
+
+	rc_data+=""
+	rc_data="$(cat <<-EOF
+		#!/usr/bin/bash
+		${line}
+		### bashfx install generated config file $(date)
+			export FX_PREFIX="$FX_PREFIX"
+			export FX_LIB="$FX_LIB"
+			export FX_CONF="$FX_CONF"
+			export FX_BIN="$FX_BIN"
+			export FX_INSTALLED=0
+
+			if [[ ! "\$PATH" =~ "\$FX_BIN" ]]; then
+				export PATH=\$PATH:\$FX_BIN;
+				echo "Updating Path ($FX_BIN)"
+			fi
+		${line}
+	EOF
+	)";
+
+	#info "$FX_LIB \n $FX_CONF"
+
+##------------------------------------------------------------------------------
+#link config files
+##------------------------------------------------------------------------------
+	sudo_mkdir "$FX_CONF"
+
+	if [ -d "$FX_CONF" ]; then
+		conf_file="$FX_CONF/bashfx.conf"
+
+		sudo_add_file "$conf_file" "$rc_data" overwrite
+		sudo chmod 664 "$conf_file"
+		profile_link 'bashfx' "$conf_file" "$BASH_RC"
+
+		cp "$conf_file" "$THIS_DIR"
+
+	fi
+
+	info "$FX_LIB"
+
+
+
+else
+	warn "BASHFX is already installed!"
+	exit 1
+fi
+
+
+exit 0

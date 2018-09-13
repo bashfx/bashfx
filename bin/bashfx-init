@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+##------------------------------------------------------------------------------
+##==============================================================================
+
+	BIN_DIR="$( cd "$(dirname "$0")"   || exit; pwd)"
+	THIS_DIR="$( cd $BIN_DIR && cd ..  || exit; pwd)"
+	ROOT_DIR="$( cd $THIS_DIR && cd .. || exit; pwd)"
+
+	LIB_DIR="$THIS_DIR/lib"
+
+	printf "\n $BIN_DIR \n $THIS_DIR \n $ROOT_DIR \n $LIB_DIR \n"
+
+##------------------------------------------------------------------------------
+
+	if [ -d "$LIB_DIR" ]; then
+		LOCAL_LIB="$LIB_DIR"
+		source "$LOCAL_LIB/includelib.bash"
+		require_lib "trap"
+		require_lib "terminal"
+		require_lib "includelib"
+		require_lib "filetools"
+		require_lib "sudoutils"
+	else
+		exit 1
+	fi
+
+##------------------------------------------------------------------------------
+
+
+
+
+##------------------------------------------------------------------------------
+# 
+##------------------------------------------------------------------------------

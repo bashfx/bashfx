@@ -1,0 +1,1 @@
+https://github.com/bashfx/bashfx/archive/master.zip

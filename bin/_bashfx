@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+##------------------------------------------------------------------------------
+##==============================================================================
+
+	BIN_DIR="$( cd "$(dirname "$0")"   || exit; pwd)"
+	THIS_DIR="$( cd $BIN_DIR && cd ..  || exit; pwd)"
+	ROOT_DIR="$( cd $THIS_DIR && cd .. || exit; pwd)"
+
+	LIB_DIR="$THIS_DIR/lib"
+
+	#printf "$BIN_DIR \n $THIS_DIR \n $ROOT_DIR \n"
+
+#-------------------------------------------------------------------------------
+# Main
+#-------------------------------------------------------------------------------
+
+  function app_dispatch(){
+    local call ret
+    call=$1; shift
+		case $call in
+			info)    printf "$BIN_DIR \n $THIS_DIR \n $ROOT_DIR \n $LIB_DIR \n" ;;
+			inst*)   bashfx-install "$@";   ret=$?;;
+		  uninst*) bashfx-uninstall "$@"; ret=$?;;
+			*) ret=1;;
+		esac
+    return $ret
+  }
+
+
+	function app_main(){
+		app_dispatch "$@"
+	}
+
+#-------------------------------------------------------------------------------
+# Driver
+#-------------------------------------------------------------------------------
+
+  #running in subshell
+  app_main "$@";ret=$?

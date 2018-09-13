@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+##------------------------------------------------------------------------------
+##==============================================================================
+
+#:$  #fx_home                      
+#:$     │                          
+#:$     ├───> #fx_pkg              
+#:$     │                          
+#:$     ├───> #fx_nfo              
+
+
+
+if [[ "${@}" =~ "--unset" ]]; then
+
+	aliases=()
+	vars=($(set | grep -E ^FX_[^=]+=.* | cut -d "=" -f1))
+
+	for a in "${aliases[@]}"; do
+		unalias "$a" 2> /dev/null
+	done
+
+	for v in "${vars[@]}"; do
+		unset "$v" 2> /dev/null
+	done
+
+  unset aliases vars 2> /dev/null
+
+else
+
+
+#: OPTION -- Set Install Root
+	FX_PREFIX="${FX_PREFIX:-$HOME/.local}" #usr/local
+
+#: OPTION -- Set FX Home Directory
+	FX_HOME="${FX_PREFIX}/lib/bashfx"
+
+#: OPTION -- Set FX Support Directories
+	FX_LIB="${FX_HOME}/lib"
+	FX_BIN="${FX_HOME}/bin"
+	FX_WKSP="${FX_HOME}/wksp"
+	FX_ENV="${FX_HOME}/env"
+
+#: OPTION -- Set FX Config Prefix
+	FX_CONF_PREFIX="${FX_CONF_PREFIX:-$FX_HOME}"
+	FX_CONF="$FX_CONF_PREFIX/etc"
+
+#: OPTION -- Set FX Package Repos 
+	FX_BASE_URL="https://github.com/bashfx"
+
+	FX_CORE_URL="$FX_BASE_URL/bashfx"
+	FX_LIBS_URL="$FX_BASE_URL/core-libs"
+	FX_BINS_URL="$FX_BASE_URL/core-fx"
+	#echo "Sourcing BashFX Vars"
+
+fi
+
+
