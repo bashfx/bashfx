@@ -25,7 +25,7 @@ define("METHOD", $_SERVER['REQUEST_METHOD']);
 <?
 try {
 
-  $out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
+  
 
   if( METHOD != 'POST' ){
     echo var_dump(USER_AGENT);
@@ -34,7 +34,10 @@ try {
     echo var_dump(REQ);
 
     if( $_REQUEST['event'] == "push" ){ 
+      //$out = shell_exec("git pull origin master > ~/php-debug.log 2>&1");
+      $out = shell_exec("git pull origin master");
       echo "PUSH IT!";
+      echo "$out";
     }
   }
 
