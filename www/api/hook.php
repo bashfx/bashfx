@@ -28,7 +28,7 @@ try {
   if( METHOD == 'POST' ){
     echo var_dump(USER_AGENT);
     echo var_dump(QUERY_STRING);
-    echo var_dump(GET);
+    echo var_dump(POSTS);
     echo var_dump(REQ);
 
     if( $_REQUEST['event'] == "push" ){ 
@@ -36,6 +36,12 @@ try {
       $out = shell_exec("git pull origin master");
       echo "PUSH IT! > " + $_REQUEST['event'];
       echo "out:$out";
+    }
+  }else{
+    echo var_dump(GETS);
+    echo var_dump(REQ);
+    if( $_REQUEST['event'] == "push" ){ 
+      echo "GET PUSH IT! > " + $_REQUEST['event'];
     }
   }
 
