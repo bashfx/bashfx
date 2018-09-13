@@ -53,10 +53,16 @@ try {
   }else{
 
     echo var_dump(REQ);
+    
+    $usig = $_REQUEST['usig'];
+    $sig  = $_REQUEST['sig'] || sha1($usig) || null;
+    $shasig = sha1(PUSHKEY);
+
     if( $_REQUEST['event'] == "push" ){ 
       $rev = shell_exec("git rev-list HEAD --count");
       echo "GET PUSH IT! > {$_REQUEST['event']}";
       echo "vers:$rev\n";
+      echo "sig:$sig :: $shasig \n";
     }
   }
 
