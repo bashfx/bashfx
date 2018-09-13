@@ -26,6 +26,8 @@ define("METHOD", $_SERVER['REQUEST_METHOD']);
 try {
 
   if( METHOD == 'POST' ){
+    $sig = $headers['X-Hub-Signature'];
+
     echo var_dump(USER_AGENT);
     echo var_dump(QUERY_STRING);
     echo var_dump(POSTS);
@@ -36,7 +38,9 @@ try {
       $out = shell_exec("git pull origin master");
       echo "PUSH IT! > " + $_REQUEST['event'];
       echo "out:$out";
+      echo "sig:$sig";
     }
+    
   }else{
 
     echo var_dump(REQ);
