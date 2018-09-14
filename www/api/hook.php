@@ -1,5 +1,7 @@
 <?php 
 
+include "./config.php"; //this has to be setup indepedently 
+
 define("HELLO_WORLD", "Hello there API hook.");
 define("QUERY_STRING", $_SERVER['QUERY_STRING']);
 define("USER_AGENT", $_SERVER['HTTP_USER_AGENT']);
@@ -7,7 +9,6 @@ define("REQ", $_REQUEST);
 define("GETS", $_GET);
 define("POSTS", $_POST);
 define("METHOD", $_SERVER['REQUEST_METHOD']);
-define("PUSHKEY", getenv('GIT_PUSH_KEY') || 0 );
 
   echo HELLO_WORLD;
   echo "YAY BABY";
