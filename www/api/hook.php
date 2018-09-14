@@ -67,7 +67,7 @@ try {
       echo "sig: $sig :: $shasig :: $usig \n";
       echo PUSHKEY;
 
-      phpinfo();
+      //phpinfo();
     }
   }
 
