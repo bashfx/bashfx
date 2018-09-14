@@ -66,7 +66,6 @@ try {
       echo "vers:$rev\n";
       echo "sig: $sig :: $shasig :: $usig \n";
       echo PUSHKEY;
-
       //phpinfo();
     }
   }
