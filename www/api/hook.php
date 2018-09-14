@@ -11,6 +11,7 @@ define("PUSHKEY", getenv('GIT_PUSH_KEY') || 0 );
 
   echo HELLO_WORLD;
   echo "YAY BABY";
+  echo getenv('GIT_PUSH_KEY');
 
   $headers = apache_request_headers();
 ?>
@@ -62,8 +63,10 @@ try {
       $rev = shell_exec("git rev-list HEAD --count");
       echo "GET PUSH IT! > {$_REQUEST['event']}";
       echo "vers:$rev\n";
-      echo "sig:$sig :: $shasig \n";
+      echo "sig: $sig :: $shasig :: $usig \n";
       echo PUSHKEY;
+
+      phpinfo();
     }
   }
 
