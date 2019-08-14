@@ -1,5 +1,5 @@
-.well-known
-.bak
-favicon*
 NOTES*
-config.php
+local
+bak
+*.log
+
