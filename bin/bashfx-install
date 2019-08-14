@@ -5,7 +5,7 @@
 #-------------------------------------------------------------------------------
 # Script
 #-------------------------------------------------------------------------------
-	
+
 	#readonly script_pid=$$
 	#readonly script_author="qodeninja"
 	#readonly script_id="bashfx"
@@ -17,7 +17,7 @@
 	FX_INSTALLED=1
 
   [ "$0" != "-bash" ] && BIN_DIR="$( cd "$(dirname "$0")" || exit; pwd -P)" \
-                      || BIN_DIR="$( cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd -P)" 
+                      || BIN_DIR="$( cd "$(dirname "${BASH_SOURCE[0]}")" || exit; pwd -P)"
 
 	THIS_DIR="$( cd $BIN_DIR && cd ..  || exit; pwd)"
 	ROOT_DIR="$( cd $THIS_DIR && cd .. || exit; pwd)"
@@ -69,7 +69,7 @@ if [ $FX_INSTALLED -eq 1 ]; then
 ##------------------------------------------------------------------------------
 #check opt flag
 ##------------------------------------------------------------------------------
-	
+
 	[ $opt_install_local -eq 0 ] && FX_PREFIX="$HOME/.local" || FX_PREFIX="/usr/local";
 
 ##------------------------------------------------------------------------------
